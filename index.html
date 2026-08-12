@@ -3,385 +3,335 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pro IG Analyzer | Advanced UI</title>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <title>Premium Agency | Portfolio & Onboarding</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;500;700&display=swap" rel="stylesheet">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
+        /* 🔴 ग्लोबल और डार्क थीम सेटिंग */
+        :root {
+            --bg-color: #050505;
+            --text-main: #ffffff;
+            --text-muted: #888888;
+            --accent-red: #E63946;
+            --card-bg: #111111;
+        }
 
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Poppins', sans-serif;
+            font-family: 'Space Grotesk', sans-serif;
+            scroll-behavior: smooth;
         }
 
-        /* 🌌 एनिमेटेड 3D बैकग्राउंड */
         body {
-            background: linear-gradient(-45deg, #0f0c29, #302b63, #24243e, #0f2027);
-            background-size: 400% 400%;
-            animation: gradientBG 15s ease infinite;
-            color: #fff;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            overflow-x: hidden;
+        }
+
+        /* 🔴 शानदार हीरो सेक्शन (Intro) */
+        .hero {
+            min-height: 100vh;
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
-            min-height: 100vh;
-            overflow: hidden;
+            text-align: center;
+            padding: 20px;
+            background: radial-gradient(circle at center, #1a0505 0%, var(--bg-color) 70%);
         }
 
-        @keyframes gradientBG {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
+        .hero h1 {
+            font-size: 5rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: -2px;
+            line-height: 1;
+            margin-bottom: 20px;
+            animation: slideUp 1s ease forwards;
         }
 
-        /* 💎 ग्लास बॉक्स (Glassmorphism) */
-        .app-container {
-            width: 90%;
-            max-width: 800px;
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 25px;
-            padding: 40px;
-            box-shadow: 0 25px 45px rgba(0, 0, 0, 0.5), inset 0 0 15px rgba(255,255,255,0.05);
-            position: relative;
-            z-index: 10;
+        .hero h1 span { color: var(--accent-red); }
+
+        .hero p {
+            font-size: 1.2rem;
+            color: var(--text-muted);
+            max-width: 600px;
+            margin-bottom: 40px;
+            animation: slideUp 1.2s ease forwards;
         }
 
-        /* 🔍 सर्च बार UI */
-        .search-box {
+        .scroll-down {
+            text-decoration: none;
+            color: var(--bg-color);
+            background: var(--text-main);
+            padding: 15px 40px;
+            font-weight: 700;
+            border-radius: 50px;
+            text-transform: uppercase;
+            transition: 0.3s;
+            animation: slideUp 1.4s ease forwards;
+        }
+
+        .scroll-down:hover {
+            background: var(--accent-red);
+            color: white;
+            box-shadow: 0 10px 30px rgba(230, 57, 70, 0.4);
+        }
+
+        /* 🔴 प्राइसिंग पैकेजेस (Cards) */
+        .section-title {
+            text-align: center;
+            font-size: 3rem;
+            margin: 100px 0 50px;
+            text-transform: uppercase;
+        }
+
+        .pricing-container {
             display: flex;
-            gap: 15px;
-            margin-bottom: 30px;
-            position: relative;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+            padding: 0 20px;
+            max-width: 1200px;
+            margin: 0 auto;
         }
 
-        .search-box input {
-            flex: 1;
-            padding: 18px 25px;
+        .card {
+            background: var(--card-bg);
+            border: 1px solid #222;
+            padding: 40px 30px;
             border-radius: 15px;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            background: rgba(0, 0, 0, 0.3);
-            color: #fff;
-            font-size: 16px;
+            width: 350px;
+            transition: all 0.4s ease;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            border-color: var(--accent-red);
+            box-shadow: 0 20px 40px rgba(230, 57, 70, 0.1);
+        }
+
+        .card.popular {
+            border-color: var(--accent-red);
+            background: linear-gradient(180deg, rgba(230,57,70,0.05) 0%, var(--card-bg) 100%);
+        }
+
+        .badge {
+            position: absolute;
+            top: -15px;
+            right: 20px;
+            background: var(--accent-red);
+            color: white;
+            padding: 5px 15px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            border-radius: 20px;
+        }
+
+        .card h3 { font-size: 1.5rem; margin-bottom: 10px; color: var(--text-muted); }
+        .card h2 { font-size: 2.5rem; margin-bottom: 20px; }
+        .card h2 span { font-size: 1rem; color: var(--text-muted); }
+        
+        .card ul { list-style: none; margin-bottom: 30px; }
+        .card ul li { margin-bottom: 15px; font-size: 1rem; display: flex; align-items: center; gap: 10px; }
+        .card ul li::before { content: '✓'; color: var(--accent-red); font-weight: bold; }
+
+        /* 🔴 क्लाइंट ऑनबोर्डिंग फॉर्म (Client Form) */
+        .form-section {
+            max-width: 800px;
+            margin: 100px auto;
+            padding: 50px;
+            background: var(--card-bg);
+            border-radius: 20px;
+            border: 1px solid #333;
+        }
+
+        .form-group { margin-bottom: 25px; }
+        .form-group label { display: block; margin-bottom: 10px; font-weight: 500; color: var(--text-muted); }
+        
+        .form-control {
+            width: 100%;
+            padding: 15px 20px;
+            background: #000;
+            border: 1px solid #333;
+            color: white;
+            font-size: 1rem;
+            border-radius: 8px;
             outline: none;
             transition: 0.3s;
         }
 
-        .search-box input:focus {
-            border-color: #e1306c;
-            box-shadow: 0 0 15px rgba(225, 48, 108, 0.4);
-        }
+        .form-control:focus { border-color: var(--accent-red); }
 
-        .search-box button {
-            padding: 0 35px;
-            border-radius: 15px;
-            border: none;
-            background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
+        textarea.form-control { resize: vertical; min-height: 120px; }
+
+        select.form-control { appearance: none; cursor: pointer; }
+
+        .submit-btn {
+            width: 100%;
+            padding: 18px;
+            background: var(--accent-red);
             color: white;
-            font-size: 16px;
-            font-weight: 600;
+            border: none;
+            font-size: 1.2rem;
+            font-weight: bold;
+            border-radius: 8px;
             cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 5px 15px rgba(220, 39, 67, 0.3);
+            transition: 0.3s;
+            text-transform: uppercase;
         }
 
-        .search-box button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(220, 39, 67, 0.5);
-        }
+        .submit-btn:hover { background: #c52936; }
 
-        /* ⏳ लोडिंग एनीमेशन */
-        .loader {
+        /* डेमो सक्सेस मैसेज */
+        #successMsg {
             display: none;
             text-align: center;
-            margin: 40px 0;
-        }
-        
-        .spinner {
-            width: 50px;
-            height: 50px;
-            border: 5px solid rgba(255, 255, 255, 0.1);
-            border-top-color: #e1306c;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-            margin: 0 auto 15px;
+            color: #4CAF50;
+            margin-top: 20px;
+            font-weight: bold;
+            font-size: 1.2rem;
         }
 
-        @keyframes spin { 100% { transform: rotate(360deg); } }
-
-        /* 📊 रिज़ल्ट एरिया (शुरुआत में छिपा हुआ) */
-        .result-area {
-            display: none;
-            animation: slideUp 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
-        }
-
+        /* 🔴 एनिमेशन कीफ्रेम्स */
         @keyframes slideUp {
-            from { opacity: 0; transform: translateY(30px); }
+            from { opacity: 0; transform: translateY(40px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* 📑 टैब नेविगेशन (Multiple Pages) */
-        .tabs {
-            display: flex;
-            gap: 10px;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-            margin-bottom: 25px;
-            padding-bottom: 10px;
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 3rem; }
+            .form-section { padding: 30px 20px; margin: 50px 15px; }
         }
-
-        .tab-btn {
-            background: transparent;
-            border: none;
-            color: #888;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            padding: 10px 20px;
-            border-radius: 10px;
-            transition: 0.3s;
-        }
-
-        .tab-btn.active, .tab-btn:hover {
-            color: #fff;
-            background: rgba(255, 255, 255, 0.1);
-        }
-
-        /* प्रोफाइल कार्ड सेक्शन */
-        .profile-header {
-            display: flex;
-            align-items: center;
-            gap: 25px;
-            margin-bottom: 25px;
-        }
-
-        .profile-header img {
-            width: 120px;
-            height: 120px;
-            border-radius: 50%;
-            border: 4px solid transparent;
-            background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888) border-box;
-            -webkit-mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
-            -webkit-mask-composite: xor;
-            mask-composite: exclude;
-            padding: 5px;
-            object-fit: cover;
-        }
-
-        .bio-data {
-            background: rgba(0,0,0,0.2);
-            padding: 15px;
-            border-radius: 12px;
-            margin-top: 10px;
-            position: relative;
-            border: 1px solid rgba(255,255,255,0.05);
-        }
-
-        .copy-btn {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            background: rgba(255,255,255,0.1);
-            border: none;
-            color: #fff;
-            padding: 5px 10px;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: 0.3s;
-            font-size: 12px;
-        }
-
-        .copy-btn:hover {
-            background: #e1306c;
-        }
-
-        /* स्टेट्स ग्रिड (Followers etc) */
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 15px;
-            margin-top: 25px;
-        }
-
-        .stat-box {
-            background: rgba(255, 255, 255, 0.03);
-            padding: 20px;
-            border-radius: 15px;
-            text-align: center;
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            transition: 0.3s;
-        }
-
-        .stat-box:hover {
-            transform: translateY(-5px);
-            background: rgba(255, 255, 255, 0.08);
-            border-color: rgba(255, 255, 255, 0.2);
-        }
-
-        .stat-box h2 { font-size: 24px; margin-bottom: 5px; color: #fff; }
-        .stat-box p { color: #aaa; font-size: 14px; }
-
-        /* टैब कंटेंट छिपने के लिए */
-        .tab-content { display: none; }
-        .tab-content.active { display: block; animation: slideUp 0.4s ease; }
-
-        /* डमी मीडिया ग्रिड */
-        .media-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 10px;
-        }
-
-        .media-item {
-            aspect-ratio: 1;
-            border-radius: 10px;
-            background-size: cover;
-            background-position: center;
-            cursor: pointer;
-            transition: 0.3s;
-        }
-        .media-item:hover { transform: scale(1.05); box-shadow: 0 10px 20px rgba(0,0,0,0.5); }
-
     </style>
 </head>
 <body>
 
-    <div class="app-container">
-        
-        <div class="search-box">
-            <input type="text" id="igLink" placeholder="🔗 Paste Instagram Profile Link or Username here...">
-            <button onclick="analyzeProfile()"><i class="fas fa-search"></i> Analyze</button>
-        </div>
+    <!-- हीरो सेक्शन -->
+    <section class="hero">
+        <h1>Design That <span>Converts.</span></h1>
+        <p>Premium Web Development & Meta Ads Setup for Businesses in Tier-2 Cities. Fast, Secure, and Built to Scale.</p>
+        <a href="#pricing" class="scroll-down">View Packages</a>
+    </section>
 
-        <!-- लोडिंग स्क्रीन -->
-        <div class="loader" id="loader">
-            <div class="spinner"></div>
-            <p>Bypassing API... Fetching Advanced Bio-Data... 🚀</p>
-        </div>
-
-        <!-- रिजल्ट्स स्क्रीन -->
-        <div class="result-area" id="resultArea">
+    <!-- प्राइसिंग सेक्शन -->
+    <section id="pricing">
+        <h2 class="section-title">Select Your Plan</h2>
+        <div class="pricing-container">
             
-            <!-- पेजेस/टैब्स -->
-            <div class="tabs">
-                <button class="tab-btn active" onclick="switchTab('profile')">👤 Profile</button>
-                <button class="tab-btn" onclick="switchTab('analytics')">📈 Analytics</button>
-                <button class="tab-btn" onclick="switchTab('media')">📸 Recent Media</button>
+            <!-- Level 1 -->
+            <div class="card">
+                <h3>Level 1: Basic</h3>
+                <h2>₹4,999 <span>/ one-time</span></h2>
+                <ul>
+                    <li>1 to 3 Pages Fast Website</li>
+                    <li>WhatsApp Integration</li>
+                    <li>Mobile Responsive Design</li>
+                    <li>Perfect for Tight Budgets</li>
+                </ul>
             </div>
 
-            <!-- Page 1: Profile -->
-            <div class="tab-content active" id="profileTab">
-                <div class="profile-header">
-                    <!-- वर्किंग हाई-क्वालिटी इमेज -->
-                    <img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=200&h=200&fit=crop" alt="User">
-                    <div style="flex: 1;">
-                        <h2>@DigitalGuru_Pro</h2>
-                        <p style="color: #aaa; margin-bottom: 10px;">Alex Sterling | Marketing Expert</p>
-                        
-                        <div class="bio-data">
-                            <button class="copy-btn" onclick="copyBio()"><i class="fas fa-copy"></i> Copy Data</button>
-                            <p id="bioText" style="font-size: 14px; line-height: 1.6;">
-                                🚀 Scaling Brands to 7-Figures.<br>
-                                💻 Advanced Meta Ads Strategist.<br>
-                                📩 DM for collaborations.<br>
-                                🔗 linktr.ee/digitalguru_pro
-                            </p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="stats-grid">
-                    <div class="stat-box">
-                        <h2>142.5K</h2>
-                        <p>Followers</p>
-                    </div>
-                    <div class="stat-box">
-                        <h2>324</h2>
-                        <p>Following</p>
-                    </div>
-                    <div class="stat-box">
-                        <h2>856</h2>
-                        <p>Total Posts</p>
-                    </div>
-                </div>
+            <!-- Level 2 -->
+            <div class="card popular">
+                <div class="badge">MOST POPULAR</div>
+                <h3>Level 2: Medium</h3>
+                <h2>₹9,999 <span>/ one-time</span></h2>
+                <ul>
+                    <li>5 Pages Premium Design</li>
+                    <li>Email Contact Form (Lead Capture)</li>
+                    <li>Basic UI Animations</li>
+                    <li>SEO Ready Structure</li>
+                </ul>
             </div>
 
-            <!-- Page 2: Analytics (Dummy Data) -->
-            <div class="tab-content" id="analyticsTab">
-                <div class="stats-grid">
-                    <div class="stat-box" style="border-top: 3px solid #00f2fe;">
-                        <h2>4.8%</h2>
-                        <p>Engagement Rate 🔥</p>
-                    </div>
-                    <div class="stat-box" style="border-top: 3px solid #4facfe;">
-                        <h2>$450</h2>
-                        <p>Est. Post Value 💰</p>
-                    </div>
-                    <div class="stat-box" style="border-top: 3px solid #f093fb;">
-                        <h2>+1.2K</h2>
-                        <p>Growth (Last 30 Days) 📈</p>
-                    </div>
-                </div>
+            <!-- Level 3 -->
+            <div class="card">
+                <div class="badge">48-HR VIP DELIVERY</div>
+                <h3>Level 3: Advanced</h3>
+                <h2>₹19,999 <span>/ one-time</span></h2>
+                <ul>
+                    <li>Custom 3D Animations</li>
+                    <li>Customer Payment Gateway Setup</li>
+                    <li>Advanced Lead Forms</li>
+                    <li>Super-Fast 48-Hour Delivery!</li>
+                </ul>
             </div>
-
-            <!-- Page 3: Media -->
-            <div class="tab-content" id="mediaTab">
-                <div class="media-grid">
-                    <div class="media-item" style="background-image: url('https://images.unsplash.com/photo-1611162617474-5b21e879e113?w=500&q=80');"></div>
-                    <div class="media-item" style="background-image: url('https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=500&q=80');"></div>
-                    <div class="media-item" style="background-image: url('https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=500&q=80');"></div>
-                </div>
-            </div>
-
         </div>
-    </div>
+    </section>
 
-    <script>
-        // लोडिंग और रिजल्ट दिखाने का लॉजिक
-        function analyzeProfile() {
-            const link = document.getElementById('igLink').value;
-            if(!link) {
-                alert("Please paste an Instagram link first!");
-                return;
-            }
-            
-            document.getElementById('resultArea').style.display = 'none';
-            document.getElementById('loader').style.display = 'block';
-
-            // 2 सेकंड का फेक लोडिंग टाइम (रियल API फील देने के लिए)
-            setTimeout(() => {
-                document.getElementById('loader').style.display = 'none';
-                document.getElementById('resultArea').style.display = 'block';
-            }, 2000);
-        }
-
-        // पेजेस (Tabs) स्विच करने का लॉजिक
-        function switchTab(tabName) {
-            // सारे कंटेंट छुपाओ
-            document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
-            // सारे बटन से एक्टिव क्लास हटाओ
-            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-
-            // जो टैब क्लिक किया है उसे दिखाओ
-            document.getElementById(tabName + 'Tab').classList.add('active');
-            event.target.classList.add('active');
-        }
-
-        // बायोडाटा कॉपी करने का लॉजिक
-        function copyBio() {
-            const bioText = document.getElementById('bioText').innerText;
-            navigator.clipboard.writeText(bioText).then(() => {
-                const btn = document.querySelector('.copy-btn');
-                btn.innerHTML = '<i class="fas fa-check"></i> Copied!';
-                btn.style.background = '#4CAF50';
+    <!-- प्रोजेक्ट ऑनबोर्डिंग फॉर्म -->
+    <section id="onboarding">
+        <h2 class="section-title">Start Your Project</h2>
+        <div class="form-section">
+            <form id="projectForm">
                 
-                // 3 सेकंड बाद वापस नार्मल कर दो
+                <div class="form-group">
+                    <label>Full Name / Business Name</label>
+                    <input type="text" class="form-control" placeholder="Enter your business name" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Business Category</label>
+                    <select class="form-control" required>
+                        <option value="" disabled selected>Select your industry</option>
+                        <option value="Trading/Finance">Trading / Finance</option>
+                        <option value="Real Estate">Real Estate / Architecture</option>
+                        <option value="Local Service">Local Service (Clinic, Salon, etc.)</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Which Website Plan do you need?</label>
+                    <select class="form-control" required>
+                        <option value="Level 1">Level 1: Basic (₹4,999)</option>
+                        <option value="Level 2">Level 2: Medium (₹9,999)</option>
+                        <option value="Level 3">Level 3: Advanced (₹19,999)</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Add Monthly Maintenance / Ads Service?</label>
+                    <select class="form-control" required>
+                        <option value="None">No, just the website for now</option>
+                        <option value="Basic">Basic Maintenance (+₹1,500/month)</option>
+                        <option value="Growth">Growth Package: Web Maintenance + Meta Ads (+₹5,000/month)</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Extra Requirements or Custom Details</label>
+                    <textarea class="form-control" placeholder="Tell us more about your specific needs, colors, or features..."></textarea>
+                </div>
+
+                <button type="button" class="submit-btn" onclick="submitDemoForm()">Submit Project Request</button>
+                <div id="successMsg">Data Saved! (Demo Mode) We will contact you shortly.</div>
+            </form>
+        </div>
+    </section>
+
+    <!-- डेमो के लिए सिंपल जावास्क्रिप्ट -->
+    <script>
+        function submitDemoForm() {
+            const btn = document.querySelector('.submit-btn');
+            btn.innerHTML = 'Processing...';
+            btn.style.background = '#333';
+            
+            // 2 सेकंड का फेक लोडिंग 
+            setTimeout(() => {
+                document.getElementById('projectForm').reset();
+                btn.innerHTML = 'Submit Project Request';
+                btn.style.background = 'var(--accent-red)';
+                document.getElementById('successMsg').style.display = 'block';
+                
                 setTimeout(() => {
-                    btn.innerHTML = '<i class="fas fa-copy"></i> Copy Data';
-                    btn.style.background = 'rgba(255,255,255,0.1)';
-                }, 3000);
-            });
+                    document.getElementById('successMsg').style.display = 'none';
+                }, 4000);
+            }, 2000);
         }
     </script>
 </body>
