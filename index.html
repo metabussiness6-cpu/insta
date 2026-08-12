@@ -3,202 +3,386 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Instagram Dynamic Profile Card</title>
+    <title>Pro IG Analyzer | Advanced UI</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
-        /* बेसिक वेबसाइट का बैकग्राउंड */
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #121212;
-            color: white;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
+
+        * {
             margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
         }
 
-        /* इन्स्टाग्राम खोलने वाला बटन */
-        .insta-btn {
-            background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
-            color: white;
-            padding: 15px 30px;
-            font-size: 18px;
-            font-weight: bold;
-            border: none;
-            border-radius: 30px;
-            cursor: pointer;
-            box-shadow: 0 4px 15px rgba(220, 39, 67, 0.4);
-            transition: 0.3s;
-        }
-
-        .insta-btn:hover {
-            transform: scale(1.05);
-        }
-
-        /* डार्क ओवरले (पीछे का धुंधला हिस्सा) */
-        .modal-overlay {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.7);
+        /* 🌌 एनिमेटेड 3D बैकग्राउंड */
+        body {
+            background: linear-gradient(-45deg, #0f0c29, #302b63, #24243e, #0f2027);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            color: #fff;
             display: flex;
             justify-content: center;
             align-items: center;
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity 0.3s ease;
-            z-index: 1000;
+            min-height: 100vh;
+            overflow: hidden;
         }
 
-        /* 🌟 कार्ड का एनीमेशन (नीचे से ऊपर आने वाला) */
-        .profile-card {
-            background: #1e1e1e;
-            width: 350px;
-            border-radius: 20px;
-            padding: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-            transform: translateY(50px);
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* 💎 ग्लास बॉक्स (Glassmorphism) */
+        .app-container {
+            width: 90%;
+            max-width: 800px;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 25px;
+            padding: 40px;
+            box-shadow: 0 25px 45px rgba(0, 0, 0, 0.5), inset 0 0 15px rgba(255,255,255,0.05);
+            position: relative;
+            z-index: 10;
+        }
+
+        /* 🔍 सर्च बार UI */
+        .search-box {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
             position: relative;
         }
 
-        /* जब मोडल एक्टिव होगा तब क्या होगा */
-        .modal-overlay.active {
-            opacity: 1;
-            visibility: visible;
+        .search-box input {
+            flex: 1;
+            padding: 18px 25px;
+            border-radius: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            background: rgba(0, 0, 0, 0.3);
+            color: #fff;
+            font-size: 16px;
+            outline: none;
+            transition: 0.3s;
         }
 
-        .modal-overlay.active .profile-card {
-            transform: translateY(0); /* कार्ड अपनी जगह पर आ जाएगा */
+        .search-box input:focus {
+            border-color: #e1306c;
+            box-shadow: 0 0 15px rgba(225, 48, 108, 0.4);
         }
 
-        /* क्लोज बटन (X) */
-        .close-btn {
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            color: #888;
-            font-size: 20px;
+        .search-box button {
+            padding: 0 35px;
+            border-radius: 15px;
+            border: none;
+            background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
+            color: white;
+            font-size: 16px;
+            font-weight: 600;
             cursor: pointer;
-            font-weight: bold;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(220, 39, 67, 0.3);
         }
 
-        .close-btn:hover { color: white; }
+        .search-box button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(220, 39, 67, 0.5);
+        }
 
-        /* प्रोफाइल पिक्चर और नाम */
-        .header {
+        /* ⏳ लोडिंग एनीमेशन */
+        .loader {
+            display: none;
+            text-align: center;
+            margin: 40px 0;
+        }
+        
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid rgba(255, 255, 255, 0.1);
+            border-top-color: #e1306c;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 15px;
+        }
+
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+
+        /* 📊 रिज़ल्ट एरिया (शुरुआत में छिपा हुआ) */
+        .result-area {
+            display: none;
+            animation: slideUp 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* 📑 टैब नेविगेशन (Multiple Pages) */
+        .tabs {
+            display: flex;
+            gap: 10px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            margin-bottom: 25px;
+            padding-bottom: 10px;
+        }
+
+        .tab-btn {
+            background: transparent;
+            border: none;
+            color: #888;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            padding: 10px 20px;
+            border-radius: 10px;
+            transition: 0.3s;
+        }
+
+        .tab-btn.active, .tab-btn:hover {
+            color: #fff;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        /* प्रोफाइल कार्ड सेक्शन */
+        .profile-header {
             display: flex;
             align-items: center;
-            gap: 15px;
-            margin-bottom: 20px;
+            gap: 25px;
+            margin-bottom: 25px;
         }
 
-        .header img {
-            width: 70px;
-            height: 70px;
+        .profile-header img {
+            width: 120px;
+            height: 120px;
             border-radius: 50%;
-            border: 3px solid #dc2743;
-            padding: 2px;
+            border: 4px solid transparent;
+            background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888) border-box;
+            -webkit-mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            padding: 5px;
+            object-fit: cover;
         }
 
-        .header h3 { margin: 0; font-size: 20px; }
-        .header p { margin: 3px 0 0; color: #aaa; font-size: 14px; }
-
-        /* फॉलोअर्स और पोस्ट के स्टैट्स */
-        .stats {
-            display: flex;
-            justify-content: space-between;
-            text-align: center;
-            margin-bottom: 20px;
-            border-top: 1px solid #333;
-            border-bottom: 1px solid #333;
-            padding: 10px 0;
+        .bio-data {
+            background: rgba(0,0,0,0.2);
+            padding: 15px;
+            border-radius: 12px;
+            margin-top: 10px;
+            position: relative;
+            border: 1px solid rgba(255,255,255,0.05);
         }
 
-        .stats div span {
-            display: block;
-            font-size: 18px;
-            font-weight: bold;
+        .copy-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(255,255,255,0.1);
+            border: none;
+            color: #fff;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: 0.3s;
+            font-size: 12px;
         }
 
-        .stats div small { color: #888; font-size: 12px; }
+        .copy-btn:hover {
+            background: #e1306c;
+        }
 
-        /* डमी पोस्ट्स का ग्रिड */
-        .posts-grid {
+        /* स्टेट्स ग्रिड (Followers etc) */
+        .stats-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 5px;
+            gap: 15px;
+            margin-top: 25px;
         }
 
-        .posts-grid div {
-            width: 100%;
-            aspect-ratio: 1 / 1;
-            background-color: #333;
-            border-radius: 5px;
+        .stat-box {
+            background: rgba(255, 255, 255, 0.03);
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: 0.3s;
+        }
+
+        .stat-box:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .stat-box h2 { font-size: 24px; margin-bottom: 5px; color: #fff; }
+        .stat-box p { color: #aaa; font-size: 14px; }
+
+        /* टैब कंटेंट छिपने के लिए */
+        .tab-content { display: none; }
+        .tab-content.active { display: block; animation: slideUp 0.4s ease; }
+
+        /* डमी मीडिया ग्रिड */
+        .media-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+        }
+
+        .media-item {
+            aspect-ratio: 1;
+            border-radius: 10px;
             background-size: cover;
             background-position: center;
             cursor: pointer;
-            transition: 0.2s;
+            transition: 0.3s;
         }
-
-        .posts-grid div:hover { filter: brightness(1.2); }
+        .media-item:hover { transform: scale(1.05); box-shadow: 0 10px 20px rgba(0,0,0,0.5); }
 
     </style>
 </head>
 <body>
 
-    <!-- यह वह बटन है जिस पर कस्टमर क्लिक करेगा -->
-    <button class="insta-btn" onclick="openPopup()">View Instagram Profile</button>
-
-    <!-- पॉपअप कार्ड का स्ट्रक्चर (जो शुरुआत में छिपा रहेगा) -->
-    <div class="modal-overlay" id="instaModal" onclick="closePopup(event)">
+    <div class="app-container">
         
-        <div class="profile-card" onclick="event.stopPropagation()">
-            <!-- बंद करने का X बटन -->
-            <span class="close-btn" onclick="closePopup()">&times;</span>
+        <div class="search-box">
+            <input type="text" id="igLink" placeholder="🔗 Paste Instagram Profile Link or Username here...">
+            <button onclick="analyzeProfile()"><i class="fas fa-search"></i> Analyze</button>
+        </div>
+
+        <!-- लोडिंग स्क्रीन -->
+        <div class="loader" id="loader">
+            <div class="spinner"></div>
+            <p>Bypassing API... Fetching Advanced Bio-Data... 🚀</p>
+        </div>
+
+        <!-- रिजल्ट्स स्क्रीन -->
+        <div class="result-area" id="resultArea">
             
-            <!-- प्रोफाइल की जानकारी -->
-            <div class="header">
-                <img src="https://via.placeholder.com/150/000000/FFFFFF/?text=DP" alt="Profile Picture">
-                <div>
-                    <h3>@TradeMediaRks</h3>
-                    <p>Digital Growth Agency 🚀</p>
+            <!-- पेजेस/टैब्स -->
+            <div class="tabs">
+                <button class="tab-btn active" onclick="switchTab('profile')">👤 Profile</button>
+                <button class="tab-btn" onclick="switchTab('analytics')">📈 Analytics</button>
+                <button class="tab-btn" onclick="switchTab('media')">📸 Recent Media</button>
+            </div>
+
+            <!-- Page 1: Profile -->
+            <div class="tab-content active" id="profileTab">
+                <div class="profile-header">
+                    <!-- वर्किंग हाई-क्वालिटी इमेज -->
+                    <img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=200&h=200&fit=crop" alt="User">
+                    <div style="flex: 1;">
+                        <h2>@DigitalGuru_Pro</h2>
+                        <p style="color: #aaa; margin-bottom: 10px;">Alex Sterling | Marketing Expert</p>
+                        
+                        <div class="bio-data">
+                            <button class="copy-btn" onclick="copyBio()"><i class="fas fa-copy"></i> Copy Data</button>
+                            <p id="bioText" style="font-size: 14px; line-height: 1.6;">
+                                🚀 Scaling Brands to 7-Figures.<br>
+                                💻 Advanced Meta Ads Strategist.<br>
+                                📩 DM for collaborations.<br>
+                                🔗 linktr.ee/digitalguru_pro
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="stats-grid">
+                    <div class="stat-box">
+                        <h2>142.5K</h2>
+                        <p>Followers</p>
+                    </div>
+                    <div class="stat-box">
+                        <h2>324</h2>
+                        <p>Following</p>
+                    </div>
+                    <div class="stat-box">
+                        <h2>856</h2>
+                        <p>Total Posts</p>
+                    </div>
                 </div>
             </div>
 
-            <!-- स्टैट्स (फॉलोअर्स आदि) -->
-            <div class="stats">
-                <div><span>124</span><small>Posts</small></div>
-                <div><span>45.2K</span><small>Followers</small></div>
-                <div><span>180</span><small>Following</small></div>
+            <!-- Page 2: Analytics (Dummy Data) -->
+            <div class="tab-content" id="analyticsTab">
+                <div class="stats-grid">
+                    <div class="stat-box" style="border-top: 3px solid #00f2fe;">
+                        <h2>4.8%</h2>
+                        <p>Engagement Rate 🔥</p>
+                    </div>
+                    <div class="stat-box" style="border-top: 3px solid #4facfe;">
+                        <h2>$450</h2>
+                        <p>Est. Post Value 💰</p>
+                    </div>
+                    <div class="stat-box" style="border-top: 3px solid #f093fb;">
+                        <h2>+1.2K</h2>
+                        <p>Growth (Last 30 Days) 📈</p>
+                    </div>
+                </div>
             </div>
 
-            <!-- डमी इंस्टाग्राम पोस्ट्स (3 फोटो) -->
-            <div class="posts-grid">
-                <div style="background-image: url('https://images.unsplash.com/photo-1611162617474-5b21e879e113?w=500&q=80');"></div>
-                <div style="background-image: url('https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=500&q=80');"></div>
-                <div style="background-image: url('https://images.unsplash.com/photo-1590283603385-17ffb3a7f29f?w=500&q=80');"></div>
+            <!-- Page 3: Media -->
+            <div class="tab-content" id="mediaTab">
+                <div class="media-grid">
+                    <div class="media-item" style="background-image: url('https://images.unsplash.com/photo-1611162617474-5b21e879e113?w=500&q=80');"></div>
+                    <div class="media-item" style="background-image: url('https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=500&q=80');"></div>
+                    <div class="media-item" style="background-image: url('https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=500&q=80');"></div>
+                </div>
             </div>
-            
+
         </div>
     </div>
 
-    <!-- JavaScript (लॉजिक जो कार्ड को दिखाएगा और छिपाएगा) -->
     <script>
-        const modal = document.getElementById('instaModal');
+        // लोडिंग और रिजल्ट दिखाने का लॉजिक
+        function analyzeProfile() {
+            const link = document.getElementById('igLink').value;
+            if(!link) {
+                alert("Please paste an Instagram link first!");
+                return;
+            }
+            
+            document.getElementById('resultArea').style.display = 'none';
+            document.getElementById('loader').style.display = 'block';
 
-        // पॉपअप खोलने का फंक्शन
-        function openPopup() {
-            modal.classList.add('active');
+            // 2 सेकंड का फेक लोडिंग टाइम (रियल API फील देने के लिए)
+            setTimeout(() => {
+                document.getElementById('loader').style.display = 'none';
+                document.getElementById('resultArea').style.display = 'block';
+            }, 2000);
         }
 
-        // पॉपअप बंद करने का फंक्शन
-        function closePopup(e) {
-            // अगर खाली जगह पर या X पर क्लिक किया है, तो कार्ड बंद कर दो
-            if (!e || e.target === modal || e.target.classList.contains('close-btn')) {
-                modal.classList.remove('active');
-            }
+        // पेजेस (Tabs) स्विच करने का लॉजिक
+        function switchTab(tabName) {
+            // सारे कंटेंट छुपाओ
+            document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+            // सारे बटन से एक्टिव क्लास हटाओ
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+
+            // जो टैब क्लिक किया है उसे दिखाओ
+            document.getElementById(tabName + 'Tab').classList.add('active');
+            event.target.classList.add('active');
+        }
+
+        // बायोडाटा कॉपी करने का लॉजिक
+        function copyBio() {
+            const bioText = document.getElementById('bioText').innerText;
+            navigator.clipboard.writeText(bioText).then(() => {
+                const btn = document.querySelector('.copy-btn');
+                btn.innerHTML = '<i class="fas fa-check"></i> Copied!';
+                btn.style.background = '#4CAF50';
+                
+                // 3 सेकंड बाद वापस नार्मल कर दो
+                setTimeout(() => {
+                    btn.innerHTML = '<i class="fas fa-copy"></i> Copy Data';
+                    btn.style.background = 'rgba(255,255,255,0.1)';
+                }, 3000);
+            });
         }
     </script>
-
 </body>
 </html>
